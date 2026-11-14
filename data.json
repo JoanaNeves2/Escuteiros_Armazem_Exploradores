@@ -1,0 +1,548 @@
+[
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Petromax",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Frigideira",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Esfregoes",
+  "qtd": 6,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Palha de aço",
+  "qtd": 3,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Colete refletor",
+  "qtd": null,
+  "obs": "Qtd original: 2 ou 3"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Alguidar",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Caixa de molas",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Caixa de talheres",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Caixa utensilios de cozinha",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Sacos do lixo",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Detergente loiça",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Lanterna pequena",
+  "qtd": 1,
+  "obs": "sem pilha"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Tabuas de cortar",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Panos",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Tacho pequeno",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Copos EA",
+  "qtd": 6,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Baloes",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Papel de aluminio",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa Material EA",
+  "item": "Canoa",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa EA roxa",
+  "item": "Comida",
+  "qtd": null,
+  "obs": "tem uma caixa de pacotes de açucar"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde",
+  "item": "(a caixa em si)",
+  "qtd": null,
+  "obs": "é preciso lavar tinha um chouriço estragado"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde",
+  "item": "Comida",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde P.Mocho",
+  "item": "Toldos",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa do café",
+  "item": "Material e coisas para fazer café",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Maço",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Martelo",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Zagaias",
+  "qtd": 6,
+  "obs": "1 zagaia está fora da caixa que não cabe"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Descarenador",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Mata moscas",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Pucaro café aluminio",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Esfregões",
+  "qtd": 2,
+  "obs": "o Cunha diz que estão bons, duvidoso"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Detergente loiça",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Caixa de luvas de borracha (médico)",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Pás",
+  "qtd": 2,
+  "obs": "identificadas com verde"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Bilhas pequenas",
+  "qtd": 4,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Bilhas grandes",
+  "qtd": 9,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa roxa material pesado",
+  "item": "Talheres",
+  "qtd": null,
+  "obs": "Qtd original: caixa; palamenta e pratos perdidos"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixas de Patrulhas",
+  "item": "Esquilo",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixas de Patrulhas",
+  "item": "Falcão",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixas de Patrulhas",
+  "item": "Pantera",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixas de Patrulhas",
+  "item": "Tigre",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixas de Patrulhas",
+  "item": "Coati",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa EA (pantera 2) verde",
+  "item": "Tachos",
+  "qtd": 3,
+  "obs": "2 com tampa"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa EA (pantera 2) verde",
+  "item": "Alguidares",
+  "qtd": 5,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde São Paulo",
+  "item": "Tachos",
+  "qtd": 3,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde São Paulo",
+  "item": "Tampas",
+  "qtd": null,
+  "obs": "Qtd original: bue"
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa verde São Paulo",
+  "item": "Jarro plástico",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Saco verde auchan",
+  "item": "Grelha grande",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Saco verde auchan",
+  "item": "Tábua de corte madeira",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Saco verde auchan",
+  "item": "Forquilha (garfo de churrasco)",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa transparente",
+  "item": "Wook",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa transparente",
+  "item": "Escoadores",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa transparente",
+  "item": "Alguidares",
+  "qtd": 8,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa transparente",
+  "item": "Pratos",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Caixa transparente",
+  "item": "Tapewares",
+  "qtd": 2,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Saco continente vermelho e amarelo",
+  "item": "Tachos",
+  "qtd": 5,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 0",
+  "local": "Saco continente vermelho e amarelo",
+  "item": "Tampas",
+  "qtd": 4,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Alguidares",
+  "qtd": 21,
+  "obs": "todos os tamanhos e feitios"
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Tendas novas",
+  "qtd": 5,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Tendas antigas",
+  "qtd": 12,
+  "obs": "não sabemos quais estão boas ou não"
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Saco intermarchê branco",
+  "item": "Ferros tendas",
+  "qtd": null,
+  "obs": "por reparar"
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Tábuas madeira",
+  "qtd": 4,
+  "obs": "à toa"
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Cavaletes madeira",
+  "qtd": 13,
+  "obs": "precisa de arranjo 2"
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Cestos/caixas",
+  "qtd": 3,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Saco com sacos",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 1",
+  "local": "Sem contentor",
+  "item": "Pacotes de leite meio magro 1L",
+  "qtd": 12,
+  "obs": "Data indicada: 11/10/2026"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Saco",
+  "item": "Quartos de tendas",
+  "qtd": null,
+  "obs": "Qtd original: ?"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Espia",
+  "qtd": null,
+  "obs": "Qtd original: saco cheio; 1 rolo novo fechado"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Caixa mistério café concerto",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Jarricans / bidons",
+  "qtd": 19,
+  "obs": "todos os tamanhos e feitios"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Caixas verdes",
+  "qtd": 4,
+  "obs": "vazias"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "(sem descrição)",
+  "qtd": 1,
+  "obs": "cenas de natal; Linha sem item na folha original – confirmar"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Bicos duplos",
+  "qtd": 4,
+  "obs": "é preciso testar"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Saco com efeites café concerto",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Chouriços nadação",
+  "qtd": null,
+  "obs": "Qtd original: ?"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Sem contentor",
+  "item": "Lata de tinta",
+  "qtd": 1,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Caixa transparente",
+  "item": "Copos",
+  "qtd": null,
+  "obs": "Qtd original: ?; café concerto ???"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Caixa papel",
+  "item": "Copos",
+  "qtd": null,
+  "obs": "Qtd original: ?; café concerto ???"
+ }
+]

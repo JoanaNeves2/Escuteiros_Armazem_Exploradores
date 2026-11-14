@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Armazém II – Inventário</title>
+<style>
+  :root{--bg:#fff;--fg:#1c1c1c;--muted:#666;--line:#ddd;--head:#1f4e79;--accent:#1f4e79;--row:#f5f8fb}
+  @media (prefers-color-scheme:dark){:root{--bg:#161a1e;--fg:#e8e8e8;--muted:#999;--line:#333;--head:#2b5f8f;--accent:#5b9bd5;--row:#1d2329}}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.4 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--fg);padding:16px;max-width:1100px;margin-inline:auto}
+  h1{margin:0 0 4px;font-size:22px}
+  .sub{color:var(--muted);margin-bottom:14px;font-size:13px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+  input,select,button{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px}
+  input[type=search]{flex:1;min-width:180px}
+  button{cursor:pointer}
+  button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.danger{color:#c0392b;padding:4px 8px}
+  .wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:640px}
+  th{background:var(--head);color:#fff;text-align:left;padding:8px 10px;position:sticky;top:0}
+  td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:var(--row)}
+  td input,td select{width:100%;border-color:transparent;background:transparent;padding:4px 6px}
+  td input:focus,td select:focus{border-color:var(--accent);background:var(--bg)}
+  .q{text-align:center;width:70px}
+  .piso{width:90px}
+  .msg{margin:10px 0;font-size:13px;min-height:18px}
+  .ok{color:#2e7d32}.err{color:#c0392b}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<h1>Armazém II – Inventário</h1>
+<div class="sub" id="count"></div>
+
+<div class="bar">
+  <input type="search" id="q" placeholder="Procurar item, caixa ou observação…">
+  <select id="fPiso"><option value="">Todos os pisos</option></select>
+  <select id="fLocal"><option value="">Todos os locais</option></select>
+  <button id="btnEdit">✏️ Editar</button>
+  <button id="btnAdd" class="hide">+ Nova linha</button>
+  <button id="btnSave" class="primary hide">💾 Guardar</button>
+  <button id="btnCancel" class="hide">Cancelar</button>
+</div>
+<div class="msg" id="msg"></div>
+
+<div class="wrap"><table>
+  <thead><tr><th>Piso</th><th>Local (caixa / saco)</th><th>Item</th><th>Qtd</th><th>Observações</th><th class="del hide"></th></tr></thead>
+  <tbody id="rows"></tbody>
+</table></div>
+<datalist id="locais"></datalist>
+
+<script>
+// ====== CONFIGURAÇÃO (só mexe aqui se o autodetetado falhar) ======
+const CFG = {
+  owner:  location.hostname.endsWith('github.io') ? location.hostname.split('.')[0] : '',
+  repo:   location.hostname.endsWith('github.io') ? location.pathname.split('/')[1] : '',
+  branch: 'main',
+  path:   'data.json'
+};
+// ==================================================================
+
+const $ = id => document.getElementById(id);
+const PISOS = ['Piso 0','Piso 1','Piso 2'];
+let data = [], editing = false, backup = null;
+
+const say = (t, cls='') => { $('msg').textContent = t; $('msg').className = 'msg ' + cls; };
+
+async function load() {
+  try {
+    const r = await fetch(CFG.path + '?t=' + Date.now());
+    data = await r.json();
+  } catch (e) { say('Não consegui carregar os dados.', 'err'); data = []; }
+  fillFilters(); render();
+}
+
+function fillFilters() {
+  const pisoSel = $('fPiso'), locSel = $('fLocal');
+  const pv = pisoSel.value, lv = locSel.value;
+  pisoSel.length = 1; locSel.length = 1;
+  PISOS.forEach(p => pisoSel.add(new Option(p, p)));
+  [...new Set(data.map(d => d.local).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt'))
+    .forEach(l => locSel.add(new Option(l, l)));
+  pisoSel.value = pv; locSel.value = lv;
+  $('locais').replaceChildren(...[...new Set(data.map(d => d.local).filter(Boolean))].map(l => { const o=document.createElement('option'); o.value=l; return o; }));
+}
+
+function visible() {
+  const q = $('q').value.trim().toLowerCase(), p = $('fPiso').value, l = $('fLocal').value;
+  return data.filter(d =>
+    (!p || d.piso === p) && (!l || d.local === l) &&
+    (!q || [d.local, d.item, d.obs].join(' ').toLowerCase().includes(q)));
+}
+
+function cellInput(row, key, cls='') {
+  const i = document.createElement('input');
+  i.value = row[key] ?? ''; if (cls) i.className = cls;
+  if (key === 'local') i.setAttribute('list', 'locais');
+  if (key === 'qtd') { i.type = 'number'; i.min = 0; i.step = 1; }
+  i.addEventListener('input', () => { row[key] = key==='qtd' ? (i.value===''?null:Number(i.value)) : i.value; });
+  return i;
+}
+
+function render() {
+  const tb = $('rows'); tb.replaceChildren();
+  const list = visible();
+  list.forEach(row => {
+    const tr = document.createElement('tr');
+    if (editing) {
+      const sel = document.createElement('select');
+      PISOS.forEach(p => sel.add(new Option(p, p))); sel.value = row.piso;
+      sel.addEventListener('change', () => row.piso = sel.value);
+      const mk = el => { const td = document.createElement('td'); td.append(el); return td; };
+      tr.append(mk(sel), mk(cellInput(row,'local')), mk(cellInput(row,'item')), mk(cellInput(row,'qtd','q')), mk(cellInput(row,'obs')));
+      const b = document.createElement('button'); b.className='danger'; b.textContent='🗑'; b.title='Apagar linha';
+      b.onclick = () => { if (confirm('Apagar "'+(row.item||'esta linha')+'"?')) { data.splice(data.indexOf(row),1); render(); } };
+      tr.append(mk(b));
+    } else {
+      [row.piso, row.local, row.item, row.qtd ?? '', row.obs].forEach((v,i) => {
+        const td = document.createElement('td'); td.textContent = v; if (i===3) td.className='q'; tr.append(td);
+      });
+    }
+    tb.append(tr);
+  });
+  const total = list.reduce((s,d) => s + (Number(d.qtd)||0), 0);
+  $('count').textContent = list.length + ' linhas · ' + total + ' unidades' + (list.length !== data.length ? ' (filtrado)' : '');
+  document.querySelectorAll('.del').forEach(e => e.classList.toggle('hide', !editing));
+}
+
+// ---------- modo de edição ----------
+function setEditing(on) {
+  editing = on;
+  ['btnAdd','btnSave','btnCancel'].forEach(id => $(id).classList.toggle('hide', !on));
+  $('btnEdit').classList.toggle('hide', on);
+  render();
+}
+$('btnEdit').onclick = () => {
+  if (!getToken(true)) return;
+  backup = JSON.stringify(data); setEditing(true);
+  say('Modo de edição. Quando acabares, carrega em Guardar.');
+};
+$('btnCancel').onclick = () => { data = JSON.parse(backup); setEditing(false); fillFilters(); render(); say(''); };
+$('btnAdd').onclick = () => {
+  $('q').value = ''; $('fPiso').value = ''; $('fLocal').value = '';
+  data.push({piso:'Piso 0', local:'', item:'', qtd:null, obs:''}); render();
+  $('rows').lastElementChild.querySelector('input').focus();
+};
+['q','fPiso','fLocal'].forEach(id => $(id).addEventListener('input', render));
+
+// ---------- guardar no GitHub ----------
+function getToken(ask) {
+  let t = localStorage.getItem('gh_token');
+  if (!t && ask) {
+    if (!CFG.owner || !CFG.repo) { alert('Define owner e repo na CONFIGURAÇÃO do index.html.'); return null; }
+    t = prompt('Cola aqui o teu token do GitHub (fica só guardado neste browser):');
+    if (t) localStorage.setItem('gh_token', t.trim());
+  }
+  return t && t.trim();
+}
+const b64 = s => btoa(unescape(encodeURIComponent(s)));
+
+$('btnSave').onclick = async () => {
+  const token = getToken(true); if (!token) return;
+  const clean = data.filter(d => d.item.trim() || d.local.trim())
+    .map(d => ({piso:d.piso, local:d.local.trim(), item:d.item.trim(), qtd:d.qtd, obs:d.obs.trim()}));
+  const url = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/${CFG.path}`;
+  const H = {Authorization:'Bearer '+token, Accept:'application/vnd.github+json'};
+  say('A guardar…');
+  try {
+    const cur = await fetch(url + '?ref=' + CFG.branch, {headers:H});
+    if (cur.status === 401) { localStorage.removeItem('gh_token'); throw new Error('Token inválido. Tenta de novo.'); }
+    const sha = cur.ok ? (await cur.json()).sha : undefined;
+    const res = await fetch(url, {method:'PUT', headers:H, body: JSON.stringify({
+      message: 'Atualizar inventário', branch: CFG.branch, sha,
+      content: b64(JSON.stringify(clean, null, 1))
+    })});
+    if (!res.ok) throw new Error((await res.json()).message || 'Erro ' + res.status);
+    data = clean; setEditing(false); fillFilters(); render();
+    say('Guardado ✓ (o site público demora ~1 minuto a refletir a alteração)', 'ok');
+  } catch (e) { say('Erro ao guardar: ' + e.message, 'err'); }
+};
+
+load();
+</script>
+</body>
+</html>
