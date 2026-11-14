@@ -4,53 +4,112 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Armazém II – Inventário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#fff;--fg:#1c1c1c;--muted:#666;--line:#ddd;--head:#1f4e79;--accent:#1f4e79;--row:#f5f8fb}
-  @media (prefers-color-scheme:dark){:root{--bg:#161a1e;--fg:#e8e8e8;--muted:#999;--line:#333;--head:#2b5f8f;--accent:#5b9bd5;--row:#1d2329}}
+  :root{
+    --paper:#eef1ec; --surface:#fbfcfa; --ink:#17211b; --muted:#5f6d63; --line:#d3dad1;
+    --green:#1f3d2f; --green-ink:#f3f6f1; --yellow:#f2c230; --danger:#b3402a; --focus:#1f6f4a;
+    --body:'Barlow',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#111712; --surface:#18201a; --ink:#e8eee8; --muted:#9aa89d; --line:#2b362d;
+          --green:#27503c; --green-ink:#f1f5f0; --danger:#e07a63; --focus:#6fc597}
+  }
   *{box-sizing:border-box}
-  body{margin:0;font:15px/1.4 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--fg);padding:16px;max-width:1100px;margin-inline:auto}
-  h1{margin:0 0 4px;font-size:22px}
-  .sub{color:var(--muted);margin-bottom:14px;font-size:13px}
-  .bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
-  input,select,button{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px}
-  input[type=search]{flex:1;min-width:180px}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.45 var(--body)}
+  .page{max-width:1120px;margin:0 auto;padding:28px 18px 110px}
+
+  header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+  h1{font:700 clamp(40px,8vw,68px)/.95 var(--display);letter-spacing:-.01em;margin:0}
+  .totals{color:var(--muted);margin-top:8px;font-size:15px}
+
+  button,input,select{font:inherit;color:inherit}
   button{cursor:pointer}
-  button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  button.danger{color:#c0392b;padding:4px 8px}
-  .wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
-  table{border-collapse:collapse;width:100%;min-width:640px}
-  th{background:var(--head);color:#fff;text-align:left;padding:8px 10px;position:sticky;top:0}
-  td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top}
-  tbody tr:nth-child(even){background:var(--row)}
-  td input,td select{width:100%;border-color:transparent;background:transparent;padding:4px 6px}
-  td input:focus,td select:focus{border-color:var(--accent);background:var(--bg)}
-  .q{text-align:center;width:70px}
-  .piso{width:90px}
-  .msg{margin:10px 0;font-size:13px;min-height:18px}
-  .ok{color:#2e7d32}.err{color:#c0392b}
-  .hide{display:none}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  .btn{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:9px 16px;font-weight:500}
+  .btn:hover{border-color:var(--muted)}
+  .btn.solid{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+  .btn.solid:hover{filter:brightness(1.15)}
+
+  .controls{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0 12px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+  .search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:var(--surface);font-size:17px}
+  .tabs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:2px}
+  .tab{flex:0 0 auto;display:flex;align-items:baseline;gap:8px;padding:8px 16px;border:1px solid var(--line);border-radius:4px;background:var(--surface);font:600 20px/1.1 var(--display)}
+  .tab small{font:500 14px var(--body);color:var(--muted)}
+  .tab[aria-pressed=true]{background:var(--green);color:var(--green-ink);border-color:var(--green);box-shadow:inset 0 -4px 0 var(--yellow)}
+  .tab[aria-pressed=true] small{color:var(--green-ink);opacity:.8}
+
+  .board{columns:2 400px;column-gap:18px}
+  .board.edit{columns:1}
+  .box{break-inside:avoid;margin:0 0 18px;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .box-head{display:flex;align-items:center;gap:10px;background:var(--green);color:var(--green-ink);padding:10px 14px;border-left:8px solid var(--yellow)}
+  .box-head h2{flex:1;margin:0;font:600 24px/1.15 var(--display)}
+  .box-head .meta{font-size:14px;opacity:.85;white-space:nowrap}
+  .box-head .piso{font:500 13px var(--body);background:rgba(255,255,255,.16);padding:2px 8px;border-radius:3px}
+  .box-head input,.box-head select{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:inherit;border-radius:3px;padding:6px 8px}
+  .box-head input{flex:1;min-width:0;font:600 20px var(--display)}
+  .box-head select option{color:#17211b}
+
+  ul.items{list-style:none;margin:0;padding:0}
+  .items li{display:flex;gap:12px;align-items:baseline;justify-content:space-between;padding:9px 14px;border-top:1px solid var(--line)}
+  .items li:first-child{border-top:0}
+  .it-name{font-weight:500}
+  .it-obs{display:block;color:var(--muted);font-size:14px;margin-top:1px}
+  .it-qty{font:700 22px/1 var(--display);min-width:2ch;text-align:right}
+  .items li.erow{display:grid;grid-template-columns:1fr 78px 1fr 36px;gap:8px;align-items:center}
+  .erow input{width:100%;border:1px solid var(--line);border-radius:3px;padding:6px 8px;background:var(--paper)}
+  .erow input[type=number]{text-align:center}
+  .x{border:0;background:none;color:var(--danger);font-size:18px;padding:4px}
+  .add-item{display:block;width:100%;border:0;border-top:1px dashed var(--line);background:none;color:var(--muted);padding:9px 14px;text-align:left}
+  .add-item:hover{color:var(--ink)}
+  @media (max-width:640px){.items li.erow{grid-template-columns:1fr 70px 36px}.erow .e-obs{grid-column:1 / 3;grid-row:2}}
+
+  .empty{padding:48px 12px;text-align:center;color:var(--muted)}
+  .empty strong{display:block;font:600 26px var(--display);color:var(--ink);margin-bottom:4px}
+
+  .editbar{position:fixed;left:0;right:0;bottom:0;background:var(--green);color:var(--green-ink);padding:12px 18px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;z-index:10;border-top:4px solid var(--yellow)}
+  .editbar .info{flex:1 1 220px;max-width:520px}
+  .editbar .btn{background:transparent;color:inherit;border-color:rgba(255,255,255,.45)}
+  .editbar .btn.go{background:var(--yellow);color:#17211b;border-color:var(--yellow);font-weight:600}
+  .hide{display:none !important}
+  #toast{min-height:22px;margin:0 0 8px;font-size:15px}
+  #toast.ok{color:var(--focus)} #toast.err{color:var(--danger)}
+  footer{margin-top:26px;color:var(--muted);font-size:13px}
+  footer button{border:0;background:none;color:inherit;text-decoration:underline;padding:0}
+  @media (prefers-reduced-motion:no-preference){.btn,.tab{transition:border-color .15s,filter .15s}}
 </style>
 </head>
 <body>
-<h1>Armazém II – Inventário</h1>
-<div class="sub" id="count"></div>
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>Armazém II</h1>
+      <div class="totals" id="totals"></div>
+    </div>
+    <button class="btn solid" id="btnEdit">Editar inventário</button>
+  </header>
 
-<div class="bar">
-  <input type="search" id="q" placeholder="Procurar item, caixa ou observação…">
-  <select id="fPiso"><option value="">Todos os pisos</option></select>
-  <select id="fLocal"><option value="">Todos os locais</option></select>
-  <button id="btnEdit">✏️ Editar</button>
-  <button id="btnAdd" class="hide">+ Nova linha</button>
-  <button id="btnSave" class="primary hide">💾 Guardar</button>
-  <button id="btnCancel" class="hide">Cancelar</button>
+  <div class="controls">
+    <input class="search" id="q" type="search" placeholder="Procurar item, caixa ou observação" aria-label="Procurar">
+    <div class="tabs" id="tabs" role="group" aria-label="Piso"></div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <main class="board" id="board"></main>
+
+  <footer><button id="btnForget" class="hide">Esquecer o token guardado neste browser</button></footer>
 </div>
-<div class="msg" id="msg"></div>
 
-<div class="wrap"><table>
-  <thead><tr><th>Piso</th><th>Local (caixa / saco)</th><th>Item</th><th>Qtd</th><th>Observações</th><th class="del hide"></th></tr></thead>
-  <tbody id="rows"></tbody>
-</table></div>
-<datalist id="locais"></datalist>
+<div class="editbar hide" id="editbar">
+  <span class="info">Modo de edição. As alterações só ficam guardadas quando carregares em Guardar.</span>
+  <button class="btn" id="btnNewBox">Nova caixa</button>
+  <button class="btn" id="btnCancel">Cancelar</button>
+  <button class="btn go" id="btnSave">Guardar</button>
+</div>
 
 <script>
 // ====== CONFIGURAÇÃO (só mexe aqui se o autodetetado falhar) ======
@@ -64,97 +123,140 @@ const CFG = {
 
 const $ = id => document.getElementById(id);
 const PISOS = ['Piso 0','Piso 1','Piso 2'];
-let data = [], editing = false, backup = null;
+let data = [], editing = false, backup = null, tab = '';
 
-const say = (t, cls='') => { $('msg').textContent = t; $('msg').className = 'msg ' + cls; };
+const h = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  e.append(...kids.flat().filter(x => x != null && x !== false));
+  return e;
+};
+const say = (t, cls = '') => { $('toast').textContent = t; $('toast').className = cls; };
+const units = rows => rows.reduce((s, d) => s + (Number(d.qtd) || 0), 0);
+const plural = (n, a, b) => n + ' ' + (n === 1 ? a : b);
 
 async function load() {
-  try {
-    const r = await fetch(CFG.path + '?t=' + Date.now());
-    data = await r.json();
-  } catch (e) { say('Não consegui carregar os dados.', 'err'); data = []; }
-  fillFilters(); render();
-}
-
-function fillFilters() {
-  const pisoSel = $('fPiso'), locSel = $('fLocal');
-  const pv = pisoSel.value, lv = locSel.value;
-  pisoSel.length = 1; locSel.length = 1;
-  PISOS.forEach(p => pisoSel.add(new Option(p, p)));
-  [...new Set(data.map(d => d.local).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt'))
-    .forEach(l => locSel.add(new Option(l, l)));
-  pisoSel.value = pv; locSel.value = lv;
-  $('locais').replaceChildren(...[...new Set(data.map(d => d.local).filter(Boolean))].map(l => { const o=document.createElement('option'); o.value=l; return o; }));
+  try { data = await (await fetch(CFG.path + '?t=' + Date.now())).json(); }
+  catch (e) { say('Não foi possível carregar o inventário. Recarrega a página.', 'err'); }
+  render();
 }
 
 function visible() {
-  const q = $('q').value.trim().toLowerCase(), p = $('fPiso').value, l = $('fLocal').value;
-  return data.filter(d =>
-    (!p || d.piso === p) && (!l || d.local === l) &&
+  const q = $('q').value.trim().toLowerCase();
+  return data.filter(d => (!tab || d.piso === tab) &&
     (!q || [d.local, d.item, d.obs].join(' ').toLowerCase().includes(q)));
 }
 
-function cellInput(row, key, cls='') {
-  const i = document.createElement('input');
-  i.value = row[key] ?? ''; if (cls) i.className = cls;
-  if (key === 'local') i.setAttribute('list', 'locais');
-  if (key === 'qtd') { i.type = 'number'; i.min = 0; i.step = 1; }
-  i.addEventListener('input', () => { row[key] = key==='qtd' ? (i.value===''?null:Number(i.value)) : i.value; });
-  return i;
+function groupRows(list) {
+  const m = new Map();
+  list.forEach(d => {
+    const k = d.piso + '\u0000' + d.local;
+    if (!m.has(k)) m.set(k, {piso: d.piso, local: d.local, rows: []});
+    m.get(k).rows.push(d);
+  });
+  return [...m.values()];
+}
+
+function renderTabs() {
+  const mk = (label, value, n) => h('button', {class:'tab', 'aria-pressed': String(tab === value),
+    onclick: () => { tab = value; render(); }}, label, h('small', {}, String(n)));
+  $('tabs').replaceChildren(mk('Todos', '', data.length), ...PISOS.map(p => mk(p, p, data.filter(d => d.piso === p).length)));
+}
+
+function viewBox(g) {
+  return h('section', {class:'box'},
+    h('div', {class:'box-head'},
+      h('h2', {}, g.local || '(sem nome)'),
+      !tab && h('span', {class:'piso'}, g.piso),
+      h('span', {class:'meta'}, plural(g.rows.length, 'linha', 'linhas'))),
+    h('ul', {class:'items'}, g.rows.map(r => h('li', {},
+      h('span', {}, h('span', {class:'it-name'}, r.item || '(sem nome)'),
+        r.obs && h('span', {class:'it-obs'}, r.obs)),
+      h('span', {class:'it-qty'}, r.qtd ?? '')))));
+}
+
+function editBox(g) {
+  const nameIn = h('input', {value: g.local, 'aria-label': 'Nome da caixa', placeholder: 'Nome da caixa ou saco',
+    oninput: e => g.rows.forEach(r => r.local = e.target.value)});
+  const pisoSel = h('select', {'aria-label': 'Piso', onchange: e => { g.rows.forEach(r => r.piso = e.target.value); }},
+    PISOS.map(p => h('option', {value: p, selected: p === g.piso ? '' : null}, p)));
+  pisoSel.value = g.piso;
+  const text = (r, key, ph, cls = '') => h('input', {class: cls, value: r[key] ?? '', placeholder: ph, 'aria-label': ph,
+    oninput: e => { r[key] = e.target.value; }});
+  return h('section', {class:'box'},
+    h('div', {class:'box-head'}, nameIn, pisoSel),
+    h('ul', {class:'items'}, g.rows.map(r => h('li', {class:'erow'},
+      text(r, 'item', 'Item'),
+      h('input', {type:'number', min:'0', step:'1', value: r.qtd ?? '', placeholder:'Qtd', 'aria-label':'Quantidade',
+        oninput: e => { r.qtd = e.target.value === '' ? null : Number(e.target.value); }}),
+      text(r, 'obs', 'Observações', 'e-obs'),
+      h('button', {class:'x', 'aria-label':'Apagar linha', title:'Apagar linha', onclick: () => {
+        if (confirm('Apagar "' + (r.item || 'esta linha') + '"?')) { data.splice(data.indexOf(r), 1); render(); }
+      }}, '✕')))),
+    h('button', {class:'add-item', onclick: () => {
+      const at = data.indexOf(g.rows[g.rows.length - 1]) + 1;
+      data.splice(at, 0, {piso: g.piso, local: g.local, item:'', qtd:null, obs:''});
+      render(); focusRow(at);
+    }}, '+ Acrescentar item'));
+}
+
+function focusRow(index) {
+  const target = data[index];
+  const boxes = [...$('board').querySelectorAll('.box')];
+  const inputs = [...$('board').querySelectorAll('.erow')];
+  const all = groupRows(visible()).flatMap(g => g.rows);
+  const i = all.indexOf(target);
+  if (i >= 0 && inputs[i]) { inputs[i].querySelector('input').focus(); inputs[i].scrollIntoView({block:'center'}); }
 }
 
 function render() {
-  const tb = $('rows'); tb.replaceChildren();
+  renderTabs();
   const list = visible();
-  list.forEach(row => {
-    const tr = document.createElement('tr');
-    if (editing) {
-      const sel = document.createElement('select');
-      PISOS.forEach(p => sel.add(new Option(p, p))); sel.value = row.piso;
-      sel.addEventListener('change', () => row.piso = sel.value);
-      const mk = el => { const td = document.createElement('td'); td.append(el); return td; };
-      tr.append(mk(sel), mk(cellInput(row,'local')), mk(cellInput(row,'item')), mk(cellInput(row,'qtd','q')), mk(cellInput(row,'obs')));
-      const b = document.createElement('button'); b.className='danger'; b.textContent='🗑'; b.title='Apagar linha';
-      b.onclick = () => { if (confirm('Apagar "'+(row.item||'esta linha')+'"?')) { data.splice(data.indexOf(row),1); render(); } };
-      tr.append(mk(b));
-    } else {
-      [row.piso, row.local, row.item, row.qtd ?? '', row.obs].forEach((v,i) => {
-        const td = document.createElement('td'); td.textContent = v; if (i===3) td.className='q'; tr.append(td);
-      });
-    }
-    tb.append(tr);
-  });
-  const total = list.reduce((s,d) => s + (Number(d.qtd)||0), 0);
-  $('count').textContent = list.length + ' linhas · ' + total + ' unidades' + (list.length !== data.length ? ' (filtrado)' : '');
-  document.querySelectorAll('.del').forEach(e => e.classList.toggle('hide', !editing));
+  const groups = groupRows(list);
+  $('board').className = 'board' + (editing ? ' edit' : '');
+  $('totals').textContent = plural(list.length, 'linha', 'linhas') + ' e ' + plural(units(list), 'unidade', 'unidades') +
+    (list.length !== data.length ? ' nesta pesquisa' : ' no total');
+  if (!groups.length) {
+    $('board').replaceChildren(h('div', {class:'empty'}, h('strong', {}, 'Nada encontrado'),
+      $('q').value ? 'Limpa a pesquisa ou escolhe outro piso.' : 'Este piso ainda não tem itens.'));
+    return;
+  }
+  $('board').replaceChildren(...groups.map(editing ? editBox : viewBox));
 }
 
 // ---------- modo de edição ----------
 function setEditing(on) {
   editing = on;
-  ['btnAdd','btnSave','btnCancel'].forEach(id => $(id).classList.toggle('hide', !on));
+  $('editbar').classList.toggle('hide', !on);
   $('btnEdit').classList.toggle('hide', on);
+  $('btnForget').classList.toggle('hide', !localStorage.getItem('gh_token'));
   render();
 }
 $('btnEdit').onclick = () => {
   if (!getToken(true)) return;
-  backup = JSON.stringify(data); setEditing(true);
-  say('Modo de edição. Quando acabares, carrega em Guardar.');
+  backup = JSON.stringify(data); say(''); setEditing(true);
 };
-$('btnCancel').onclick = () => { data = JSON.parse(backup); setEditing(false); fillFilters(); render(); say(''); };
-$('btnAdd').onclick = () => {
-  $('q').value = ''; $('fPiso').value = ''; $('fLocal').value = '';
-  data.push({piso:'Piso 0', local:'', item:'', qtd:null, obs:''}); render();
-  $('rows').lastElementChild.querySelector('input').focus();
+$('btnCancel').onclick = () => { data = JSON.parse(backup); setEditing(false); say(''); };
+$('btnNewBox').onclick = () => {
+  $('q').value = '';
+  data.push({piso: tab || 'Piso 0', local: 'Nova caixa', item: '', qtd: null, obs: ''});
+  render();
+  const heads = $('board').querySelectorAll('.box-head input');
+  const last = heads[heads.length - 1]; last.focus(); last.select(); last.scrollIntoView({block:'center'});
 };
-['q','fPiso','fLocal'].forEach(id => $(id).addEventListener('input', render));
+$('q').addEventListener('input', render);
+$('btnForget').onclick = () => { localStorage.removeItem('gh_token'); $('btnForget').classList.add('hide'); say('Token esquecido neste browser.', 'ok'); };
 
 // ---------- guardar no GitHub ----------
 function getToken(ask) {
   let t = localStorage.getItem('gh_token');
   if (!t && ask) {
     if (!CFG.owner || !CFG.repo) { alert('Define owner e repo na CONFIGURAÇÃO do index.html.'); return null; }
-    t = prompt('Cola aqui o teu token do GitHub (fica só guardado neste browser):');
+    t = prompt('Cola o token do GitHub com permissão de escrita neste repositório. Fica guardado só neste browser.');
     if (t) localStorage.setItem('gh_token', t.trim());
   }
   return t && t.trim();
@@ -164,24 +266,24 @@ const b64 = s => btoa(unescape(encodeURIComponent(s)));
 $('btnSave').onclick = async () => {
   const token = getToken(true); if (!token) return;
   const clean = data.filter(d => d.item.trim() || d.local.trim())
-    .map(d => ({piso:d.piso, local:d.local.trim(), item:d.item.trim(), qtd:d.qtd, obs:d.obs.trim()}));
+    .map(d => ({piso: d.piso, local: d.local.trim(), item: d.item.trim(), qtd: d.qtd, obs: d.obs.trim()}));
   const url = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/${CFG.path}`;
-  const H = {Authorization:'Bearer '+token, Accept:'application/vnd.github+json'};
-  say('A guardar…');
+  const H = {Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json'};
+  $('btnSave').disabled = true; say('A guardar…');
   try {
-    const cur = await fetch(url + '?ref=' + CFG.branch, {headers:H});
-    if (cur.status === 401) { localStorage.removeItem('gh_token'); throw new Error('Token inválido. Tenta de novo.'); }
+    const cur = await fetch(url + '?ref=' + CFG.branch, {headers: H});
+    if (cur.status === 401) { localStorage.removeItem('gh_token'); throw new Error('o token não é válido. Carrega em Guardar para colar outro.'); }
     const sha = cur.ok ? (await cur.json()).sha : undefined;
-    const res = await fetch(url, {method:'PUT', headers:H, body: JSON.stringify({
-      message: 'Atualizar inventário', branch: CFG.branch, sha,
-      content: b64(JSON.stringify(clean, null, 1))
-    })});
-    if (!res.ok) throw new Error((await res.json()).message || 'Erro ' + res.status);
-    data = clean; setEditing(false); fillFilters(); render();
-    say('Guardado ✓ (o site público demora ~1 minuto a refletir a alteração)', 'ok');
-  } catch (e) { say('Erro ao guardar: ' + e.message, 'err'); }
+    const res = await fetch(url, {method: 'PUT', headers: H, body: JSON.stringify({
+      message: 'Atualizar inventário', branch: CFG.branch, sha, content: b64(JSON.stringify(clean, null, 1))})});
+    if (!res.ok) throw new Error((await res.json()).message || 'erro ' + res.status);
+    data = clean; setEditing(false);
+    say('Guardado. O site público demora cerca de 1 minuto a mostrar a alteração.', 'ok');
+  } catch (e) { say('Não foi possível guardar: ' + e.message, 'err'); }
+  $('btnSave').disabled = false;
 };
 
+if (localStorage.getItem('gh_token')) $('btnForget').classList.remove('hide');
 load();
 </script>
 </body>
