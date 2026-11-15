@@ -402,7 +402,7 @@
   "piso": "Piso 1",
   "local": "Sem contentor",
   "item": "Alguidares",
-  "qtd": 21,
+  "qtd": 26,
   "obs": "todos os tamanhos e feitios"
  },
  {
@@ -544,5 +544,19 @@
   "item": "Copos",
   "qtd": null,
   "obs": "Qtd original: ?; café concerto ???"
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Caixa de Guardanapos",
+  "item": "Guardanatos",
+  "qtd": null,
+  "obs": ""
+ },
+ {
+  "piso": "Piso 2",
+  "local": "Cesta",
+  "item": "garrafitas de vidro",
+  "qtd": null,
+  "obs": "confirmar o piso??"
  }
 ]
